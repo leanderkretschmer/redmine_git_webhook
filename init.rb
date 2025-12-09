@@ -5,9 +5,10 @@ Redmine::Plugin.register :redmine_git_webhook do
   name 'Redmine GitHub Webhook Plugin'
   author 'Leander Kretschmer'
   description 'Plugin zur Integration von GitHub Webhooks in Redmine Tickets'
-  version '1.0.0'
-  url ''
-  author_url ''
+  version '0.0.1'
+  author 'Leander Kretschmer'
+  url 'https://github.com/leanderkretschmer/redmine_git_webhook'
+  author_url 'https://github.com/leanderkretschmer'
 
   project_module :github_webhook do
     permission :view_github_webhook, :github_webhooks => [:show]
