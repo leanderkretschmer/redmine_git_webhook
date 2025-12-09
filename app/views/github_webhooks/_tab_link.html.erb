@@ -1,4 +1,4 @@
-<% if issue && issue.project.trackers.any? { |t| t.name == 'GitHub' } %>
+<% if issue && issue.project.module_enabled?(:github_webhook) %>
   <% tab_selected = (controller.params[:tab] == 'github') %>
   <li>
     <%= link_to l(:label_github), issue_path(issue, :tab => 'github'), :class => (tab_selected ? 'selected' : '') %>

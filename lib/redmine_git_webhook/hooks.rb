@@ -1,10 +1,10 @@
 module RedmineGitWebhook
   class Hooks < Redmine::Hook::ViewListener
     # Tab-Link hinzufügen (wird in der Issue-Ansicht angezeigt)
-    def view_issues_show_details_bottom(context = {})
+    def view_issues_show_tabs(context = {})
       issue = context[:issue]
       controller = context[:controller]
-      return '' unless issue && issue.project.trackers.any? { |t| t.name == 'GitHub' }
+      return '' unless issue && issue.project.module_enabled?(:github_webhook)
 
       controller.send(:render_to_string, {
         partial: 'github_webhooks/tab_link',
@@ -13,10 +13,10 @@ module RedmineGitWebhook
     end
 
     # Tab-Content anzeigen (wird angezeigt, wenn Tab aktiv ist)
-    def view_issues_show_description_bottom(context = {})
+    def view_issues_show_details_bottom(context = {})
       issue = context[:issue]
       controller = context[:controller]
-      return '' unless issue && issue.project.trackers.any? { |t| t.name == 'GitHub' }
+      return '' unless issue && issue.project.module_enabled?(:github_webhook)
 
       tab = controller.params[:tab]
       if tab == 'github'
