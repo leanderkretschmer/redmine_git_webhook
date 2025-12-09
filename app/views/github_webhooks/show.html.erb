@@ -1,0 +1,62 @@
+<div class="contextual">
+  <% if github_webhook.persisted? %>
+    <%= link_to l(:button_delete), github_webhook_path(issue), :method => :delete, 
+        :confirm => l(:text_are_you_sure), :class => 'icon icon-del' %>
+  <% else %>
+    <%= link_to l(:button_create), github_webhook_path(issue), :method => :post, :class => 'icon icon-add' %>
+  <% end %>
+</div>
+
+<h2><%= l(:label_github_webhook) %></h2>
+
+<% if github_webhook.persisted? %>
+  <div class="box">
+    <h3><%= l(:label_webhook_configuration) %></h3>
+    
+    <p>
+      <strong><%= l(:label_webhook_url) %>:</strong><br>
+      <code style="background: #f5f5f5; padding: 5px; display: block; margin: 5px 0; word-break: break-all;"><%= github_webhook.webhook_url %></code>
+    </p>
+
+    <p>
+      <strong><%= l(:label_content_type) %>:</strong><br>
+      <code style="background: #f5f5f5; padding: 5px; display: block; margin: 5px 0;"><%= github_webhook.content_type %></code>
+    </p>
+
+    <p>
+      <strong><%= l(:label_secret) %>:</strong><br>
+      <code style="background: #f5f5f5; padding: 5px; display: block; margin: 5px 0; font-family: monospace; word-break: break-all;"><%= github_webhook.secret %></code>
+      <em class="info"><%= l(:text_secret_info) %></em>
+    </p>
+
+    <h3><%= l(:label_github_events) %></h3>
+    <% if github_events.any? %>
+      <table class="list">
+        <thead>
+          <tr>
+            <th><%= l(:label_event_type) %></th>
+            <th><%= l(:label_message) %></th>
+            <th><%= l(:label_date) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% github_events.each do |event| %>
+            <tr>
+              <td><%= event.event_type %></td>
+              <td><%= event.formatted_message %></td>
+              <td><%= format_time(event.created_at) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="nodata"><%= l(:label_no_data) %></p>
+    <% end %>
+  </div>
+<% else %>
+  <div class="box">
+    <p><%= l(:text_no_github_webhook_configured) %></p>
+    <p><%= l(:text_create_webhook_info) %></p>
+  </div>
+<% end %>
+

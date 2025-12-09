@@ -1,0 +1,8 @@
+<div id="github-webhook-content">
+  <%= render :partial => 'github_webhooks/show', :locals => { 
+    :issue => issue, 
+    :github_webhook => github_webhook,
+    :github_events => github_events
+  } %>
+</div>
+

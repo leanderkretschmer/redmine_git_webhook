@@ -1,0 +1,23 @@
+en:
+  label_github_webhook: GitHub Webhook
+  label_webhook_configuration: Webhook Configuration
+  label_webhook_url: Webhook URL
+  label_content_type: Content-Type
+  label_secret: Secret
+  label_github_events: GitHub Events
+  label_event_type: Event Type
+  label_message: Message
+  label_date: Date
+  label_no_data: No data
+
+  text_secret_info: This secret must be configured in GitHub as "Secret" to ensure authentication.
+  text_no_github_webhook_configured: No GitHub webhook is configured for this ticket yet.
+  text_create_webhook_info: Click "Create" to create a webhook for this ticket.
+
+  notice_github_webhook_created: GitHub webhook created successfully
+  notice_github_webhook_updated: GitHub webhook updated successfully
+  notice_github_webhook_deleted: GitHub webhook deleted successfully
+
+  error_github_webhook_create_failed: Error creating GitHub webhook
+  error_github_webhook_update_failed: Error updating GitHub webhook
+
