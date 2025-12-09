@@ -4,34 +4,43 @@ class GithubEvent < ActiveRecord::Base
   validates :event_type, presence: true
   validates :payload, presence: true
 
-  serialize :payload, Hash
+  # Payload wird als JSON-String gespeichert und beim Zugriff geparst
+  def payload_hash
+    @payload_hash ||= begin
+      case payload
+      when Hash
+        payload
+      when String
+        JSON.parse(payload)
+      else
+        JSON.parse(payload.to_s)
+      end
+    rescue JSON::ParserError
+      {}
+    end
+  end
 
-  before_save :ensure_payload_is_hash
+  def payload=(value)
+    @payload_hash = nil
+    super(value.is_a?(String) ? value : value.to_json)
+  end
 
   def formatted_message
-    payload_hash = payload.is_a?(Hash) ? payload : JSON.parse(payload)
+    hash = payload_hash
     
     case event_type
     when 'push'
-      commits = payload_hash['commits'] || []
-      ref = payload_hash['ref'] || ''
+      commits = hash['commits'] || []
+      ref = hash['ref'] || ''
       branch = ref.gsub('refs/heads/', '')
       "Push zu Branch '#{branch}': #{commits.length} Commit(s)"
     when 'pull_request'
-      action = payload_hash['action'] || ''
-      pr_number = payload_hash.dig('pull_request', 'number') || ''
+      action = hash['action'] || ''
+      pr_number = hash.dig('pull_request', 'number') || ''
       "Pull Request ##{pr_number}: #{action}"
     else
       "Event: #{event_type}"
     end
-  end
-
-  private
-
-  def ensure_payload_is_hash
-    self.payload = JSON.parse(payload) if payload.is_a?(String)
-  rescue JSON::ParserError
-    # Falls Parsing fehlschlägt, bleibt es wie es ist
   end
 end
 
